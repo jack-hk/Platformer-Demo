@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: 6bc8760e9976e484fa75e09260610b3d
+labels:
+- Architecture
+- Ground
+- Prop
+- Road
+- Sky
+- Vegetation
+- Wall
+- Water
+folderAsset: yes
+DefaultImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
