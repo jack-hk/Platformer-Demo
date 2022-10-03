@@ -1,0 +1,3 @@
+Project is using this style guide:
+
+https://github.com/justinwasilenko/Unity-Style-Guide
