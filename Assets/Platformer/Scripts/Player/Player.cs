@@ -29,7 +29,7 @@ public class Player : Entity
     {
         if (IsAwake())
         {
-            Move();
+            Walk();
         }
     }
 
@@ -37,20 +37,32 @@ public class Player : Entity
     {
         if (IsAwake())
         {
-           Action();
+            Action();
         }
     }
 
-    private void Idle() 
+    private void Idle()
     {
         Debug.Log("idle");
     }
 
-    private void Move()
+    private void Walk()
     {
-        InputManager.Walk();
+        InputManager.Move();
         //LastDirection = InputManager.Walk();
-        playerPhysics.velocity = new Vector2((int)InputManager.Walk() * (speed * 10) * Time.deltaTime, playerPhysics.velocity.y);
+        playerPhysics.velocity = new Vector2((int)InputManager.Move() * (speed * 10) * Time.deltaTime, playerPhysics.velocity.y);
+
+        switch (InputManager.Move())
+        {
+            case InputManager.MoveDirection.right:
+                playerSprite.flipX = false;
+                break;
+            case InputManager.MoveDirection.left:
+                playerSprite.flipX = true;
+                break;
+            default:
+                break;
+        }
     }
 
     private void Action()

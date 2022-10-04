@@ -14,7 +14,7 @@ public static class InputManager
         right = 1
     }
 
-    public static MoveDirection Walk()
+    public static MoveDirection Move()
     {
         switch (Input.GetAxisRaw("Horizontal"))
         {
