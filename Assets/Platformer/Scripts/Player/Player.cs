@@ -10,48 +10,47 @@ using UnityEngine.Windows;
 public class Player : Entity
 {
     Vector2 playerVector;
+    InputManager.MoveDirection LastDirection;
+
     Rigidbody2D playerPhysics;
     CapsuleCollider2D playerCollider;
     SpriteRenderer playerSprite;
 
-
-    Action MoveState, ActionState;
-
-    protected int speed;
+    [SerializeField] private float speed;
 
     private void Start()
     {
         playerPhysics = GetComponent<Rigidbody2D>();
         playerCollider = GetComponent<CapsuleCollider2D>();
         playerSprite = GetComponent<SpriteRenderer>();
-
     }
 
     private void FixedUpdate()
     {
-        MoveState = IsAwake() ? Move : Idle;
+        if (IsAwake())
+        {
+            Move();
+        }
     }
 
     private void Update()
     {
-        ActionState = IsAwake() ? Action : Idle;
+        if (IsAwake())
+        {
+           Action();
+        }
     }
 
-    private void Idle() { }
+    private void Idle() 
+    {
+        Debug.Log("idle");
+    }
 
     private void Move()
     {
-        playerPhysics.velocity = new Vector2((int)InputManager.Walk() * 2 * Time.deltaTime, playerPhysics.velocity.y);
-        
-        switch (InputManager.Walk())
-        {
-            case InputManager.Direction.right:
-                break;
-            case InputManager.Direction.left:
-                break;
-            default:
-                break;
-        }
+        InputManager.Walk();
+        //LastDirection = InputManager.Walk();
+        playerPhysics.velocity = new Vector2((int)InputManager.Walk() * (speed * 10) * Time.deltaTime, playerPhysics.velocity.y);
     }
 
     private void Action()

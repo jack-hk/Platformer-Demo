@@ -7,23 +7,26 @@ using UnityEngine;
 
 public static class InputManager
 {
-    public enum Direction
+    public enum MoveDirection
     {
-        right,
-        left
+        none,
+        left = -1,
+        right = 1
     }
 
-    public static Direction Walk()
+    public static MoveDirection Walk()
     {
-        if (Input.GetAxisRaw("Horizontal") == -1)
+        switch (Input.GetAxisRaw("Horizontal"))
         {
-            return Direction.left;
+            case -1:
+                Debug.Log("left");
+                return MoveDirection.left;
+            case 1:
+                Debug.Log("right");
+                return MoveDirection.right;
+            default:
+                return MoveDirection.none;
         }
-        else if (Input.GetAxisRaw("Horizontal") == 0)
-        {
-            return Direction.right;
-        }
-        return Direction.right;
     }
 
     public static bool Attack()
