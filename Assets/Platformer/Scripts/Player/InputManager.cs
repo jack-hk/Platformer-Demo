@@ -14,15 +14,13 @@ public static class InputManager
         right = 1
     }
 
-    public static MoveDirection Move()
+    public static MoveDirection GetMoveDirection()
     {
         switch (Input.GetAxisRaw("Horizontal"))
         {
             case -1:
-                Debug.Log("left");
                 return MoveDirection.left;
             case 1:
-                Debug.Log("right");
                 return MoveDirection.right;
             default:
                 return MoveDirection.none;

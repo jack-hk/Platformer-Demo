@@ -9,20 +9,22 @@ using UnityEngine.Windows;
 
 public class Player : Entity
 {
-    Vector2 playerVector;
-    InputManager.MoveDirection LastDirection;
-
     Rigidbody2D playerPhysics;
     CapsuleCollider2D playerCollider;
     SpriteRenderer playerSprite;
-
+    Boomerang boomerang;
+    
     [SerializeField] private float speed;
 
-    private void Start()
+    public GameObject rangedProjectile;
+
+    private void Awake()
     {
         playerPhysics = GetComponent<Rigidbody2D>();
         playerCollider = GetComponent<CapsuleCollider2D>();
         playerSprite = GetComponent<SpriteRenderer>();
+
+        boomerang = rangedProjectile.GetComponent<Boomerang>();
     }
 
     private void FixedUpdate()
@@ -41,18 +43,9 @@ public class Player : Entity
         }
     }
 
-    private void Idle()
-    {
-        Debug.Log("idle");
-    }
-
     private void Walk()
     {
-        InputManager.Move();
-        //LastDirection = InputManager.Walk();
-        playerPhysics.velocity = new Vector2((int)InputManager.Move() * (speed * 10) * Time.deltaTime, playerPhysics.velocity.y);
-
-        switch (InputManager.Move())
+        switch (InputManager.GetMoveDirection())
         {
             case InputManager.MoveDirection.right:
                 playerSprite.flipX = false;
@@ -63,13 +56,14 @@ public class Player : Entity
             default:
                 break;
         }
+        playerPhysics.velocity = new Vector2((int)InputManager.GetMoveDirection() * (speed * 10) * Time.deltaTime, playerPhysics.velocity.y);
     }
-
+    
     private void Action()
     {
         if (InputManager.Attack())
         {
-
+            boomerang.Fire(false);
         }
     }
 }

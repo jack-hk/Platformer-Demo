@@ -7,12 +7,11 @@ using UnityEngine;
 public class GameManager : MonoBehaviour
 {
     // --------------Data-------------- 
-    private float timer;
+    public float timer;
 
     // --------------In-Built-------------- 
     private void Update()
     {
-        timer += Time.deltaTime;
     }
 
 }
