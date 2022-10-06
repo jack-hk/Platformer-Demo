@@ -9,7 +9,11 @@ public class Boomerang : Projectile
 {
     private bool isReturning = false;
 
-    SpriteRenderer boomerangSprite;
+    private SpriteRenderer boomerangSprite;
+    private Collider2D boomerangCollider;
+    private Collider2D playerCollider;
+
+    [SerializeField] private float range;
 
     private Vector2 playerPosition;
 
@@ -17,7 +21,9 @@ public class Boomerang : Projectile
     protected override void Awake()
     {
         base.Awake();
-        boomerangSprite = GetComponent<SpriteRenderer>();;
+        boomerangSprite = GetComponent<SpriteRenderer>();
+        boomerangCollider = GetComponent<Collider2D>();
+        playerCollider = GetComponentInParent<Collider2D>();
     }
 
     private void Update()
@@ -26,6 +32,7 @@ public class Boomerang : Projectile
         {
             TravelReturn();
         }
+
     }
 
     private void FixedUpdate()
@@ -35,11 +42,27 @@ public class Boomerang : Projectile
             TravelOut();
         }
     }
+    private void OnTriggerEnter2D(Collider2D collider)
+    {
+        if (isReturning && collider.tag.Contains("Player"))
+        {
+            Disable();
+        }
+    }
+
+    private int DefaultDirection()
+    {
+        if ((int)InputManager.GetMoveDirection() == 0)
+        {
+            return 1;
+        }
+        else return (int)InputManager.GetMoveDirection();
+    }
 
     private void TravelOut()
     {
 
-        projectilePhysics.velocity = new Vector2((speed * 10) * Time.deltaTime, projectilePhysics.velocity.y);
+        projectilePhysics.velocity = new Vector2(((speed * 10) * Time.deltaTime * DefaultDirection()), projectilePhysics.velocity.y);
     }
 
     private void TravelReturn()
@@ -64,8 +87,10 @@ public class Boomerang : Projectile
 
     IEnumerator EventTimer()
     {
-        yield return new WaitForSeconds(despawnTimer / 2);
+        yield return new WaitForSeconds(range);
         boomerangSprite.color = Color.blue;
         isReturning = true;
     }
+
+
 }

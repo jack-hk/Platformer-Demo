@@ -51,6 +51,11 @@ public class Projectile : MonoBehaviour
     IEnumerator DespawnTimer()
     {
         yield return new WaitForSeconds(despawnTimer);
+        Disable();
+    }
+
+    protected void Disable()
+    {
         this.gameObject.SetActive(false);
         this.gameObject.transform.localPosition = startPosition;
     }
