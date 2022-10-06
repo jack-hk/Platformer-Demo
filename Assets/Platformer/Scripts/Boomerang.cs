@@ -9,17 +9,15 @@ public class Boomerang : Projectile
 {
     private bool isReturning = false;
 
-    Transform boomerangTransform;
-    Transform playerTransform;
     SpriteRenderer boomerangSprite;
+
+    private Vector2 playerPosition;
 
 
     protected override void Awake()
     {
         base.Awake();
-        boomerangTransform = GetComponent<Transform>();
-        playerTransform = GetComponentInParent<Transform>();
-        boomerangSprite = GetComponent<SpriteRenderer>();
+        boomerangSprite = GetComponent<SpriteRenderer>();;
     }
 
     private void Update()
@@ -46,8 +44,9 @@ public class Boomerang : Projectile
 
     private void TravelReturn()
     {
-        projectilePhysics.velocity = new Vector2(0, projectilePhysics.velocity.y);
-        projectilePhysics.transform.position = Vector2.MoveTowards(projectilePhysics.transform.position, playerTransform.transform.position, (speed * 10) * Time.fixedDeltaTime);
+        playerPosition = gameObject.transform.parent.position;
+        projectilePhysics.velocity = Vector2.zero;
+        projectilePhysics.transform.position = Vector2.MoveTowards(projectilePhysics.transform.position, playerPosition, (speed / 5) * Time.deltaTime);
     }
 
     public override void Fire(bool hasDespawn)

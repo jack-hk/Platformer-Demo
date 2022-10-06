@@ -13,7 +13,7 @@ public class Player : Entity
     CapsuleCollider2D playerCollider;
     SpriteRenderer playerSprite;
     Boomerang boomerang;
-    
+
     [SerializeField] private float speed;
 
     public GameObject rangedProjectile;
@@ -63,7 +63,7 @@ public class Player : Entity
     {
         if (InputManager.Attack())
         {
-            boomerang.Fire(false);
+            boomerang.Fire(true);
         }
     }
 }

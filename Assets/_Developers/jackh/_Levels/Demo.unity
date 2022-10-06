@@ -803,7 +803,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6262718518816150211, guid: 7d907a3f534de8f4383690142c393d71, type: 3}
       propertyPath: speed
-      value: 10
+      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 6262718518816150211, guid: 7d907a3f534de8f4383690142c393d71, type: 3}
       propertyPath: despawnTimer

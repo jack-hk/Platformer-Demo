@@ -8,7 +8,7 @@ public class Projectile : MonoBehaviour
 {
     protected Rigidbody2D projectilePhysics;
 
-    private Vector3 startPosition;
+    protected Vector2 startPosition;
 
     [SerializeField] protected int speed;
     [SerializeField] protected float despawnTimer;
