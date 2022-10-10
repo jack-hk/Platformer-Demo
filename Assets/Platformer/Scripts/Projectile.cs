@@ -10,29 +10,31 @@ public class Projectile : MonoBehaviour
 
     protected Vector2 startPosition;
 
+    [Header("Configuration")]
     [SerializeField] protected int speed;
     [SerializeField] protected float despawnTimer;
-    private bool isFired = false;
 
+    #region Built-in
     protected virtual void Awake()
     {
         projectilePhysics = GetComponent<Rigidbody2D>();
         startPosition = GetComponentInParent<Transform>().localPosition;
     }
-
+    #endregion
+    #region Custom
     public virtual void Fire(bool hasDespawn)
     {
-        if (!isFired)
+        if (!this.gameObject.activeInHierarchy)
         {
-            isFired = true;
-            if (!this.gameObject.activeInHierarchy)
-            {
-                this.gameObject.SetActive(true);
-            }
-            Event();
-            Despawn(hasDespawn);
-            isFired = false;
+            this.gameObject.SetActive(true);
         }
+        Event();
+        Despawn(hasDespawn);
+    }
+    protected void Disable()
+    {
+        this.gameObject.SetActive(false);
+        this.gameObject.transform.localPosition = startPosition; ;
     }
 
     protected virtual bool Event()
@@ -53,10 +55,5 @@ public class Projectile : MonoBehaviour
         yield return new WaitForSeconds(despawnTimer);
         Disable();
     }
-
-    protected void Disable()
-    {
-        this.gameObject.SetActive(false);
-        this.gameObject.transform.localPosition = startPosition;
-    }
+    #endregion
 }

@@ -9,11 +9,13 @@ public class Entity : MonoBehaviour
     [SerializeField] private int maxHealth;
     private int health;
 
+    #region Built-in
     private void Awake()
     {
         OnSpawned();
     }
-
+    #endregion
+    #region Custom
     public void OnSpawned()
     {
         health = maxHealth;
@@ -35,4 +37,5 @@ public class Entity : MonoBehaviour
             return false;
         }
     }
+    #endregion
 }

@@ -7,7 +7,7 @@ using UnityEngine;
 
 public static class InputManager
 {
-    public enum MoveDirection
+    public enum HorizontalDirection
     {
         none,
         left = -1,
@@ -21,20 +21,20 @@ public static class InputManager
         jump = 1
     }
 
-    public static MoveDirection GetMoveDirection()
+    public static HorizontalDirection GetHorizontalInput()
     {
         switch (Input.GetAxisRaw("Horizontal"))
         {
             case -1:
-                return MoveDirection.left;
+                return HorizontalDirection.left;
             case 1:
-                return MoveDirection.right;
+                return HorizontalDirection.right;
             default:
-                return MoveDirection.none;
+                return HorizontalDirection.none;
         }
     }
 
-    public static VerticalDirection VerticalMove() //rename
+    public static VerticalDirection GetVerticalInput()
     {
         switch (Input.GetAxisRaw("Vertical"))
         {
@@ -47,9 +47,9 @@ public static class InputManager
         }
     }
 
-    public static bool Attack()
+    public static bool GetRangedInput()
     {
-        if (Input.GetButtonDown("Fire1"))
+        if (Input.GetButtonDown("Fire2"))
         {
             return true;
         }

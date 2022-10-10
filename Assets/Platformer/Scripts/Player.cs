@@ -10,12 +10,12 @@ public class Player : Entity
     Boomerang boomerang;
 
     [Header("Configuration")]
-    [SerializeField] private LayerMask surfaceLayer;
-    [SerializeField] private float speed;
-    [SerializeField] private float jump;
+    [SerializeField] private float moveSpeed;
+    [SerializeField] private float jumpHeight;
 
     public GameObject rangedProjectile;
 
+    #region Built-in
     private void Awake()
     {
         playerPhysics = GetComponent<Rigidbody2D>();
@@ -41,27 +41,28 @@ public class Player : Entity
             Jump();
         }
     }
-
+    #endregion
+    #region Custom
     private void Walk()
     {
-        switch (InputManager.GetMoveDirection())
+        switch (InputManager.GetHorizontalInput())
         {
-            case InputManager.MoveDirection.right:
+            case InputManager.HorizontalDirection.right:
                 playerSprite.flipX = false;
                 break;
-            case InputManager.MoveDirection.left:
+            case InputManager.HorizontalDirection.left:
                 playerSprite.flipX = true;
                 break;
             default:
                 break;
         }
-        playerPhysics.velocity = new Vector2((int)InputManager.GetMoveDirection() * (speed * 10) * Time.deltaTime, playerPhysics.velocity.y);
+        playerPhysics.velocity = new Vector2((int)InputManager.GetHorizontalInput() * (moveSpeed * 10) * Time.deltaTime, playerPhysics.velocity.y);
     }
 
     private void Jump()
     {
         float extraHeightTest = 0.3f; //additional raycast length for surface detection
-        RaycastHit2D rayhit = Physics2D.Raycast(playerCollider.bounds.center, Vector2.down, playerCollider.bounds.extents.y + extraHeightTest, surfaceLayer);
+        RaycastHit2D rayhit = Physics2D.Raycast(playerCollider.bounds.center, Vector2.down, playerCollider.bounds.extents.y + extraHeightTest, LayerManager.ground);
 
 #if UNITY_EDITOR //visual ray for debugging
         Color rayColor;
@@ -76,7 +77,7 @@ public class Player : Entity
         Debug.DrawRay(playerCollider.bounds.center, Vector2.down * (playerCollider.bounds.extents.y + extraHeightTest), rayColor);
 #endif
 
-        switch (InputManager.VerticalMove())
+        switch (InputManager.GetVerticalInput())
         {
             case InputManager.VerticalDirection.crouch:
                 //play crouch anim
@@ -84,7 +85,7 @@ public class Player : Entity
             case InputManager.VerticalDirection.jump:
                 if (IsGrounded(rayhit))
                 {
-                    playerPhysics.velocity = Vector2.up * jump;
+                    playerPhysics.velocity = Vector2.up * jumpHeight;
                 }
                 break;
             default:
@@ -100,11 +101,11 @@ public class Player : Entity
 
     private void AttackAction()
     {
-        if (InputManager.Attack())
+        if (InputManager.GetRangedInput())
         {
             boomerang.Fire(true);
         }
     }
-
+    #endregion
 
 }

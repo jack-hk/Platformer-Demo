@@ -1074,6 +1074,14 @@ PrefabInstance:
       value: 100
       objectReference: {fileID: 0}
     - target: {fileID: 3223836197456286809, guid: 7d907a3f534de8f4383690142c393d71, type: 3}
+      propertyPath: moveSpeed
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 3223836197456286809, guid: 7d907a3f534de8f4383690142c393d71, type: 3}
+      propertyPath: jumpHeight
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 3223836197456286809, guid: 7d907a3f534de8f4383690142c393d71, type: 3}
       propertyPath: surfaceLayer.m_Bits
       value: 8
       objectReference: {fileID: 0}

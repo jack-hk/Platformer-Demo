@@ -7,17 +7,14 @@ using static UnityEngine.GraphicsBuffer;
 
 public class Boomerang : Projectile
 {
-    private bool isReturning = false;
-
     private SpriteRenderer boomerangSprite;
-    private Collider2D boomerangCollider;
-    private Collider2D playerCollider;
+    private Collider2D boomerangCollider, playerCollider;
 
     [SerializeField] private float range;
 
     private Vector2 playerPosition;
 
-
+    #region Built-in
     protected override void Awake()
     {
         base.Awake();
@@ -28,41 +25,48 @@ public class Boomerang : Projectile
 
     private void Update()
     {
-        if (isReturning)
-        {
-            TravelReturn();
-        }
+        TravelReturn();
 
     }
 
     private void FixedUpdate()
     {
-        if (!isReturning)
-        {
-            TravelOut();
-        }
+        TravelOut();
     }
+
     private void OnTriggerEnter2D(Collider2D collider)
     {
-        if (isReturning && collider.tag.Contains("Player"))
+        if (LayerManager.ContainsPlayerTag(collider))
         {
             Disable();
         }
     }
+    #endregion
+    #region Custom
+    public override void Fire(bool hasDespawn)
+    {
+        base.Fire(hasDespawn);
+        //fire event code goes here
+        boomerangSprite.color = Color.red;
+    }
+
+    protected override bool Event()
+    {
+        StartCoroutine(EventTimer());
+        return true;
+    }
 
     private int DefaultDirection()
     {
-        int lastDirection;
-        if ((int)InputManager.GetMoveDirection() == 0)
+        if ((int)InputManager.GetHorizontalInput() == 0)
         {
             return 1;
         }
         else
         {
-            lastDirection = (int)InputManager.GetMoveDirection();
-            return lastDirection;
+            return (int)InputManager.GetHorizontalInput();
         }
-            
+
     }
 
     private void TravelOut()
@@ -78,25 +82,11 @@ public class Boomerang : Projectile
         projectilePhysics.transform.position = Vector2.MoveTowards(projectilePhysics.transform.position, playerPosition, (speed / 5) * Time.deltaTime);
     }
 
-    public override void Fire(bool hasDespawn)
-    {
-        base.Fire(hasDespawn);
-        isReturning = false;
-        boomerangSprite.color = Color.red;
-    }
-
-    protected override bool Event()
-    {
-        StartCoroutine(EventTimer());
-        return true;
-    }
-
     IEnumerator EventTimer()
     {
         yield return new WaitForSeconds(range);
         boomerangSprite.color = Color.blue;
-        isReturning = true;
     }
-
+    #endregion
 
 }
