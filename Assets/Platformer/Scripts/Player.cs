@@ -1,9 +1,4 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEditor.Search;
 using UnityEngine;
-using UnityEngine.Windows;
 
 //JackHK
 
@@ -14,7 +9,10 @@ public class Player : Entity
     SpriteRenderer playerSprite;
     Boomerang boomerang;
 
+    [Header("Configuration")]
+    [SerializeField] private LayerMask surfaceLayer;
     [SerializeField] private float speed;
+    [SerializeField] private float jump;
 
     public GameObject rangedProjectile;
 
@@ -39,7 +37,8 @@ public class Player : Entity
     {
         if (IsAwake())
         {
-            Action();
+            AttackAction();
+            Jump();
         }
     }
 
@@ -58,12 +57,54 @@ public class Player : Entity
         }
         playerPhysics.velocity = new Vector2((int)InputManager.GetMoveDirection() * (speed * 10) * Time.deltaTime, playerPhysics.velocity.y);
     }
-    
-    private void Action()
+
+    private void Jump()
+    {
+        float extraHeightTest = 0.3f; //additional raycast length for surface detection
+        RaycastHit2D rayhit = Physics2D.Raycast(playerCollider.bounds.center, Vector2.down, playerCollider.bounds.extents.y + extraHeightTest, surfaceLayer);
+
+#if UNITY_EDITOR //visual ray for debugging
+        Color rayColor;
+        if (rayhit.collider != null)
+        {
+            rayColor = Color.green;
+        }
+        else
+        {
+            rayColor = Color.red;
+        }
+        Debug.DrawRay(playerCollider.bounds.center, Vector2.down * (playerCollider.bounds.extents.y + extraHeightTest), rayColor);
+#endif
+
+        switch (InputManager.VerticalMove())
+        {
+            case InputManager.VerticalDirection.crouch:
+                //play crouch anim
+                break;
+            case InputManager.VerticalDirection.jump:
+                if (IsGrounded(rayhit))
+                {
+                    playerPhysics.velocity = Vector2.up * jump;
+                }
+                break;
+            default:
+                break;
+        }
+    }
+
+    private bool IsGrounded(RaycastHit2D ray)
+    {
+
+        return ray.collider != null;
+    }
+
+    private void AttackAction()
     {
         if (InputManager.Attack())
         {
             boomerang.Fire(true);
         }
     }
+
+
 }

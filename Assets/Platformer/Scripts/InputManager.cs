@@ -14,6 +14,13 @@ public static class InputManager
         right = 1
     }
 
+    public enum VerticalDirection
+    {
+        none,
+        crouch = -1,
+        jump = 1
+    }
+
     public static MoveDirection GetMoveDirection()
     {
         switch (Input.GetAxisRaw("Horizontal"))
@@ -24,6 +31,19 @@ public static class InputManager
                 return MoveDirection.right;
             default:
                 return MoveDirection.none;
+        }
+    }
+
+    public static VerticalDirection VerticalMove() //rename
+    {
+        switch (Input.GetAxisRaw("Vertical"))
+        {
+            case -1:
+                return VerticalDirection.crouch;
+            case 1:
+                return VerticalDirection.jump;
+            default:
+                return VerticalDirection.none;
         }
     }
 

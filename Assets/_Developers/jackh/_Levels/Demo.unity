@@ -635,7 +635,7 @@ GameObject:
   - component: {fileID: 1779807842}
   - component: {fileID: 1779807841}
   - component: {fileID: 1779807840}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Platform
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1062,12 +1062,20 @@ PrefabInstance:
       value: Player
       objectReference: {fileID: 0}
     - target: {fileID: 3223836197456286809, guid: 7d907a3f534de8f4383690142c393d71, type: 3}
+      propertyPath: jump
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 3223836197456286809, guid: 7d907a3f534de8f4383690142c393d71, type: 3}
       propertyPath: speed
       value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 3223836197456286809, guid: 7d907a3f534de8f4383690142c393d71, type: 3}
       propertyPath: maxHealth
       value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 3223836197456286809, guid: 7d907a3f534de8f4383690142c393d71, type: 3}
+      propertyPath: surfaceLayer.m_Bits
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 4749556531789034952, guid: 7d907a3f534de8f4383690142c393d71, type: 3}
       propertyPath: m_IsTrigger

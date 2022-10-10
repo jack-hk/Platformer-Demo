@@ -52,11 +52,17 @@ public class Boomerang : Projectile
 
     private int DefaultDirection()
     {
+        int lastDirection;
         if ((int)InputManager.GetMoveDirection() == 0)
         {
             return 1;
         }
-        else return (int)InputManager.GetMoveDirection();
+        else
+        {
+            lastDirection = (int)InputManager.GetMoveDirection();
+            return lastDirection;
+        }
+            
     }
 
     private void TravelOut()
