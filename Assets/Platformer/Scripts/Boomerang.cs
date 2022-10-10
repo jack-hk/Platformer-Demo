@@ -56,7 +56,7 @@ public class Boomerang : Projectile
         return true;
     }
 
-    private int DefaultDirection()
+    private int RangedDirection()
     {
         if ((int)InputManager.GetHorizontalInput() == 0)
         {
@@ -72,7 +72,7 @@ public class Boomerang : Projectile
     private void TravelOut()
     {
 
-        projectilePhysics.velocity = new Vector2(((speed * 10) * Time.deltaTime * DefaultDirection()), projectilePhysics.velocity.y);
+        projectilePhysics.velocity = new Vector2(((speed * 10) * Time.deltaTime * RangedDirection()), projectilePhysics.velocity.y);
     }
 
     private void TravelReturn()
