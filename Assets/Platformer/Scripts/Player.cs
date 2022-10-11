@@ -62,7 +62,7 @@ public class Player : Entity
     private void Jump()
     {
         float extraHeightTest = 0.3f; //additional raycast length for surface detection
-        RaycastHit2D rayhit = Physics2D.Raycast(playerCollider.bounds.center, Vector2.down, playerCollider.bounds.extents.y + extraHeightTest, LayerManager.ground);
+        RaycastHit2D rayhit = Physics2D.Raycast(playerCollider.bounds.center, Vector2.down, playerCollider.bounds.extents.y + extraHeightTest, LayerTagManager.ground);
 
 #if UNITY_EDITOR //visual ray for debugging
         Color rayColor;

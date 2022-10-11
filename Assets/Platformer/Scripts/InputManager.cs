@@ -49,7 +49,7 @@ public static class InputManager
 
     public static bool GetRangedInput()
     {
-        if (Input.GetButtonDown("Fire2"))
+        if (Input.GetButtonDown("Fire1"))
         {
             return true;
         }

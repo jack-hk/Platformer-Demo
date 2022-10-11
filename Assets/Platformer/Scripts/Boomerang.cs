@@ -9,10 +9,14 @@ public class Boomerang : Projectile
 {
     private SpriteRenderer boomerangSprite;
     private Collider2D boomerangCollider, playerCollider;
+    private bool isReturning;
+    private bool rangedCheck = false;
+    private int lastRecordedDirection = 1;
 
     [SerializeField] private float range;
 
     private Vector2 playerPosition;
+
 
     #region Built-in
     protected override void Awake()
@@ -25,18 +29,24 @@ public class Boomerang : Projectile
 
     private void Update()
     {
-        TravelReturn();
+        if (isReturning)
+        {
+            TravelReturn();
+        }
 
     }
 
     private void FixedUpdate()
     {
-        TravelOut();
+        if (!isReturning)
+        {
+            TravelOut();
+        }
     }
 
     private void OnTriggerEnter2D(Collider2D collider)
     {
-        if (LayerManager.ContainsPlayerTag(collider))
+        if (LayerTagManager.ContainsPlayerTag(collider) && isReturning == true)
         {
             Disable();
         }
@@ -46,7 +56,8 @@ public class Boomerang : Projectile
     public override void Fire(bool hasDespawn)
     {
         base.Fire(hasDespawn);
-        //fire event code goes here
+        isReturning = false;
+        rangedCheck = false;
         boomerangSprite.color = Color.red;
     }
 
@@ -56,17 +67,30 @@ public class Boomerang : Projectile
         return true;
     }
 
+    protected override void Despawn(bool enabled)
+    {
+        base.Despawn(enabled);
+    }
+
     private int RangedDirection()
     {
-        if ((int)InputManager.GetHorizontalInput() == 0)
+        if (!rangedCheck)
         {
-            return 1;
+            if ((int)InputManager.GetHorizontalInput() == 0)
+            {
+                lastRecordedDirection = 1;
+                rangedCheck = true;
+                return 1;
+            }
+            else
+            {
+                lastRecordedDirection = (int)InputManager.GetHorizontalInput();
+                rangedCheck = true;
+                return (int)InputManager.GetHorizontalInput();
+            }
         }
         else
-        {
-            return (int)InputManager.GetHorizontalInput();
-        }
-
+            return lastRecordedDirection;
     }
 
     private void TravelOut()
@@ -86,6 +110,7 @@ public class Boomerang : Projectile
     {
         yield return new WaitForSeconds(range);
         boomerangSprite.color = Color.blue;
+        isReturning = true;
     }
     #endregion
 

@@ -4,7 +4,7 @@ using UnityEngine;
 
 //JackHK
 
-public static class LayerManager
+public static class LayerTagManager
 {
     public static LayerMask ground = LayerMask.GetMask("Ground");
 

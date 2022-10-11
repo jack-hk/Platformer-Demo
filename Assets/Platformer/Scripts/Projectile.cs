@@ -9,6 +9,7 @@ public class Projectile : MonoBehaviour
     protected Rigidbody2D projectilePhysics;
 
     protected Vector2 startPosition;
+    private bool isFiring = false;
 
     [Header("Configuration")]
     [SerializeField] protected int speed;
@@ -24,8 +25,9 @@ public class Projectile : MonoBehaviour
     #region Custom
     public virtual void Fire(bool hasDespawn)
     {
-        if (!this.gameObject.activeInHierarchy)
+        if (!this.gameObject.activeInHierarchy && isFiring == false)
         {
+            isFiring = true;
             this.gameObject.SetActive(true);
         }
         Event();
@@ -33,8 +35,9 @@ public class Projectile : MonoBehaviour
     }
     protected void Disable()
     {
+        isFiring = false;
         this.gameObject.SetActive(false);
-        this.gameObject.transform.localPosition = startPosition; ;
+        this.gameObject.transform.localPosition = startPosition;
     }
 
     protected virtual bool Event()
@@ -42,8 +45,9 @@ public class Projectile : MonoBehaviour
         return true;
     }
 
-    private void Despawn(bool enabled)
+    protected virtual void Despawn(bool enabled)
     {
+        isFiring = false;
         if (enabled)
         {
             StartCoroutine(DespawnTimer());
