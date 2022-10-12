@@ -4,10 +4,10 @@ using UnityEngine;
 
 public class Player : Entity
 {
-    Rigidbody2D playerPhysics;
-    CapsuleCollider2D playerCollider;
-    SpriteRenderer playerSprite;
-    Boomerang boomerang;
+    private Rigidbody2D playerPhysics;
+    private CapsuleCollider2D playerCollider;
+    private SpriteRenderer playerSprite;
+    private Boomerang boomerang;
 
     [Header("Configuration")]
     [SerializeField] private float moveSpeed;
@@ -16,8 +16,9 @@ public class Player : Entity
     public GameObject rangedProjectile;
 
     #region Built-in
-    private void Awake()
+    protected override void Awake()
     {
+        base.Awake();
         playerPhysics = GetComponent<Rigidbody2D>();
         playerCollider = GetComponent<CapsuleCollider2D>();
         playerSprite = GetComponent<SpriteRenderer>();
@@ -43,15 +44,16 @@ public class Player : Entity
     }
     #endregion
     #region Custom
+
     private void Walk()
     {
         switch (InputManager.GetHorizontalInput())
         {
             case InputManager.HorizontalDirection.right:
-                playerSprite.flipX = false;
+                playerSprite.flipX = true; //fix at later date, needs reversing
                 break;
             case InputManager.HorizontalDirection.left:
-                playerSprite.flipX = true;
+                playerSprite.flipX = false;
                 break;
             default:
                 break;
@@ -63,9 +65,8 @@ public class Player : Entity
     {
         float extraHeightTest = 0.3f; //additional raycast length for surface detection
         RaycastHit2D rayhit = Physics2D.Raycast(playerCollider.bounds.center, Vector2.down, playerCollider.bounds.extents.y + extraHeightTest, LayerTagManager.ground);
-
-#if UNITY_EDITOR //visual ray for debugging
         Color rayColor;
+
         if (rayhit.collider != null)
         {
             rayColor = Color.green;
@@ -75,7 +76,6 @@ public class Player : Entity
             rayColor = Color.red;
         }
         Debug.DrawRay(playerCollider.bounds.center, Vector2.down * (playerCollider.bounds.extents.y + extraHeightTest), rayColor);
-#endif
 
         switch (InputManager.GetVerticalInput())
         {
@@ -95,15 +95,17 @@ public class Player : Entity
 
     private bool IsGrounded(RaycastHit2D ray)
     {
-
         return ray.collider != null;
     }
 
-    private void AttackAction()
+    private void AttackAction() 
     {
         if (InputManager.GetRangedInput())
         {
-            boomerang.Fire(true);
+            if (!boomerang.isActiveAndEnabled)
+            {
+                boomerang.Fire(true);
+            }
         }
     }
     #endregion

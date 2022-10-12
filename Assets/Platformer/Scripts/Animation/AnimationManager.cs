@@ -4,7 +4,7 @@ using UnityEngine;
 
 //JackHK
 
-public class AnimationManager : MonoBehaviour
+public class AnimationsManager : MonoBehaviour
 {
     Animator animator;
     private string currentState;

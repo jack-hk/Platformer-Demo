@@ -10,7 +10,7 @@ public class Entity : MonoBehaviour
     private int health;
 
     #region Built-in
-    private void Awake()
+    protected virtual void Awake()
     {
         OnSpawned();
     }
@@ -28,14 +28,7 @@ public class Entity : MonoBehaviour
 
     public bool IsDead()
     {
-        if (health < 1)
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
+        return health < 1;
     }
     #endregion
 }
