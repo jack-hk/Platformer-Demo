@@ -6,14 +6,15 @@ using UnityEngine;
 
 public class Entity : MonoBehaviour
 {
-    [SerializeField] private int maxHealth;
-    private int health;
+    [HideInInspector] public float health;
+    [SerializeField] protected float maxHealth;
 
     #region Built-in
-    protected virtual void Awake()
+    protected virtual void Start()
     {
         OnSpawned();
     }
+
     #endregion
     #region Custom
     public void OnSpawned()
@@ -23,7 +24,11 @@ public class Entity : MonoBehaviour
 
     public bool IsAwake()
     {
-        return true;
+        if (IsDead())
+        {
+            return false;
+        } 
+        else return true;
     }
 
     public bool IsDead()

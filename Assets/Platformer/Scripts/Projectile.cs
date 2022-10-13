@@ -33,7 +33,7 @@ public class Projectile : MonoBehaviour
         Event();
         Despawn(hasDespawn);
     }
-    protected void Disable()
+    protected virtual void Disable()
     {
         isFiring = false;
         this.gameObject.SetActive(false);

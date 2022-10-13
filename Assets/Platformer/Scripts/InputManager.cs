@@ -47,6 +47,18 @@ public static class InputManager
         }
     }
 
+    public static bool GetAbilityInput()
+    {
+        if (Input.GetButton("Jump"))
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
     public static bool GetRangedInput()
     {
         if (Input.GetButtonDown("Fire1"))

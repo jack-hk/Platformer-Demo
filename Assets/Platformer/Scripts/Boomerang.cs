@@ -9,6 +9,7 @@ public class Boomerang : Projectile
 {
     private SpriteRenderer boomerangSprite;
     private Collider2D boomerangCollider, playerCollider;
+    private Animator playerAnimator;
     private bool isReturning;
     private bool rangedCheck = false;
     private int lastRecordedDirection = 1;
@@ -25,6 +26,7 @@ public class Boomerang : Projectile
         boomerangSprite = GetComponent<SpriteRenderer>();
         boomerangCollider = GetComponent<Collider2D>();
         playerCollider = GetComponentInParent<Collider2D>();
+        playerAnimator = GetComponentInParent<Animator>();
     }
 
     private void Update()
@@ -58,7 +60,6 @@ public class Boomerang : Projectile
         base.Fire(hasDespawn);
         isReturning = false;
         rangedCheck = false;
-        boomerangSprite.color = Color.red;
     }
 
     protected override bool Event()
@@ -67,9 +68,16 @@ public class Boomerang : Projectile
         return true;
     }
 
+    protected override void Disable()
+    {
+        base.Disable();
+        
+    }
+
     protected override void Despawn(bool enabled)
     {
         base.Despawn(enabled);
+        
     }
 
     private int RangedDirection()
@@ -109,7 +117,6 @@ public class Boomerang : Projectile
     IEnumerator EventTimer()
     {
         yield return new WaitForSeconds(range);
-        boomerangSprite.color = Color.blue;
         isReturning = true;
     }
     #endregion
