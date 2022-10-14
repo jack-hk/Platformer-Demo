@@ -9,11 +9,13 @@ public class Player : Entity
     public GameObject rangedProjectile;
     [HideInInspector] public float jetpackFuel;
     public float jetpackFuelMax;
+    public bool isClimbing = false;
 
     [Header("Movement")]
     [SerializeField] private float moveSpeed;
     [SerializeField] private float jumpHeight;
-   
+    [SerializeField] private float climbSpeed;
+
 
     private Rigidbody2D playerPhysics;
     private CapsuleCollider2D playerCollider;
@@ -27,6 +29,7 @@ public class Player : Entity
     private bool dustCooldown = true;
     private bool healthUICooldown = false;
     private bool fuelUICooldown = false;
+    
     private float oldHealth, oldFuel;
 
     #region Built-in
@@ -67,7 +70,7 @@ public class Player : Entity
         DeathCheck();
         UIUpdate();
         DustEffect();
-
+        ResetClimbState();
         if (IsAwake())
         {
             AttackAction();
@@ -121,13 +124,31 @@ public class Player : Entity
                 //play crouch anim
                 break;
             case InputManager.VerticalDirection.jump:
-                if (IsGrounded())
+                if (IsGrounded() && !isClimbing)
                 {
                     playerPhysics.velocity = Vector2.up * jumpHeight;
+                }
+                else if (isClimbing)
+                {
+                    Climb();
                 }
                 break;
             default:
                 break;
+        }
+    }
+
+    private void Climb()
+    {
+        playerPhysics.velocity = Vector2.up * climbSpeed;
+        animator.SetBool("isClimbing", true);
+    }
+
+    private void ResetClimbState()
+    {
+        if (!isClimbing)
+        {
+            animator.SetBool("isClimbing", false);
         }
     }
 

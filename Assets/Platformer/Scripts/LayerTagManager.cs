@@ -17,4 +17,14 @@ public static class LayerTagManager
         else return false;
         
     }
+    public static bool ContainsBoomerangTag(Collider2D collider)
+    {
+        if (collider.tag.Contains("Boomerang"))
+        {
+            return true;
+        }
+        else return false;
+
+    }
+
 }
